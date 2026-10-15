@@ -1,0 +1,30 @@
+node_modules/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+.vite/
+
+# local infra data
+.data/
+infra/.pgdata/
+uploads/
+apps/api/uploads/
+apps/api/.mail/
+
+# test output
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# editors / OS
+.DS_Store
+Thumbs.db
+.idea/
+*.log
+.e2e.log
+.install.log

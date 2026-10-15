@@ -1,0 +1,73 @@
+{
+  "name": "silt-store",
+  "private": true,
+  "version": "0.1.0",
+  "description": "SILT — fashion e-commerce: React storefront, admin panel, Express API, PostgreSQL",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "dev": "concurrently -n api,web -c blue,magenta \"npm run dev -w @silt/api\" \"npm run dev -w @silt/web\"",
+    "dev:api": "npm run dev -w @silt/api",
+    "dev:web": "npm run dev -w @silt/web",
+    "build": "npm run build -w @silt/api && npm run build -w @silt/web",
+    "start": "npm run start -w @silt/api",
+    "db:start": "node infra/scripts/embedded-postgres.mjs",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:reset": "prisma migrate reset --force",
+    "db:seed": "prisma db seed",
+    "db:studio": "prisma studio",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "npm run test --workspaces --if-present",
+    "test:e2e": "playwright test",
+    "postinstall": "prisma generate"
+  },
+  "prisma": {
+    "schema": "prisma/schema.prisma",
+    "seed": "tsx prisma/seed/index.ts"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.0",
+    "@playwright/test": "^1.56.0",
+    "@types/node": "^22.10.0",
+    "concurrently": "^9.1.0",
+    "embedded-postgres": "17.9.0-beta.17",
+    "eslint": "^9.39.0",
+    "eslint-config-prettier": "^10.1.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.0.0",
+    "prettier": "^3.6.0",
+    "prettier-plugin-tailwindcss": "^0.6.14",
+    "prisma": "6.19.3",
+    "tsx": "^4.20.0",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.0"
+  },
+  "dependencies": {
+    "@prisma/client": "6.19.3",
+    "argon2": "^0.44.0"
+  },
+  "allowScripts": {
+    "argon2@0.44.0": true,
+    "esbuild@0.28.2": true,
+    "esbuild@0.27.7": true,
+    "prisma@6.19.3": true,
+    "sharp@0.34.5": true,
+    "@embedded-postgres/windows-x64@17.9.0-beta.17": true,
+    "@prisma/client@6.19.3": true,
+    "@prisma/engines@6.19.3": true,
+    "@scarf/scarf": false
+  }
+}

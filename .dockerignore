@@ -1,0 +1,12 @@
+node_modules
+**/node_modules
+**/dist
+.data
+.env
+.env.*
+!.env.example
+apps/api/uploads
+apps/api/.mail
+playwright-report
+test-results
+.git

@@ -1,0 +1,144 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter-tight';
+@import '@fontsource/cormorant-garamond/400-italic.css';
+@import '@fontsource/cormorant-garamond/500.css';
+
+/* ─────────────── SILT design tokens ───────────────
+   Palette: milk, ink, graphite, stone greys + one accent (rust). */
+@theme {
+  --color-milk: #f4f1ea;
+  --color-paper: #fbfaf7;
+  --color-mist: #ebe7de;
+  --color-line: #ddd8cc;
+  --color-stone: #77736b;
+  --color-graphite: #2b2a28;
+  --color-ink: #141414;
+  --color-rust: #c4572b;
+  --color-rust-dark: #a8461f;
+  --color-success: #2f6b3f;
+  --color-danger: #b3261e;
+  --color-warning: #a8730f;
+
+  --font-sans: 'Inter Tight Variable', 'Inter Tight', system-ui, sans-serif;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1rem;
+  --tracking-label: 0.14em;
+
+  --radius-xs: 2px;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  @keyframes shimmer {
+    from {
+      background-position: -200% 0;
+    }
+    to {
+      background-position: 200% 0;
+    }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-milk text-ink font-sans;
+    font-feature-settings: 'ss01', 'cv11';
+  }
+  ::selection {
+    @apply bg-ink text-milk;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ink;
+  }
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Small uppercase labels: eyebrows, buttons, table heads. */
+  .label {
+    @apply text-2xs font-medium tracking-label uppercase;
+  }
+  .container-x {
+    @apply mx-auto w-full max-w-[1520px] px-4 sm:px-6 lg:px-10;
+  }
+  .display {
+    @apply font-medium tracking-[-0.02em];
+  }
+  .editorial {
+    @apply font-serif font-normal italic;
+  }
+  .skeleton {
+    background: linear-gradient(90deg, var(--color-mist) 25%, #f3f0e9 50%, var(--color-mist) 75%);
+    background-size: 200% 100%;
+    @apply animate-shimmer;
+  }
+  .prose-silt h2 {
+    @apply mt-10 mb-3 text-xl font-medium;
+  }
+  .prose-silt p {
+    @apply mb-4 leading-relaxed text-graphite;
+  }
+  .prose-silt ul {
+    @apply mb-4 list-disc space-y-1.5 pl-5 text-graphite;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+}
+@keyframes fade-out {
+  to { opacity: 0; }
+}
+@keyframes dialog-in {
+  from { opacity: 0; transform: translate(-50%, -48%) scale(0.98); }
+}
+@keyframes sheet-in-right {
+  from { transform: translateX(100%); }
+}
+@keyframes sheet-out-right {
+  to { transform: translateX(100%); }
+}
+@keyframes sheet-in-left {
+  from { transform: translateX(-100%); }
+}
+@keyframes sheet-out-left {
+  to { transform: translateX(-100%); }
+}
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}

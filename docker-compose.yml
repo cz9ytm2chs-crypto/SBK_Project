@@ -1,0 +1,69 @@
+# Full local stack: docker compose up --build
+# Shop: http://localhost:4000 · Mailpit (письма): http://localhost:8025
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: silt
+      POSTGRES_PASSWORD: silt
+      POSTGRES_DB: silt
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - '5433:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U silt']
+      interval: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - '6379:6379'
+
+  mailpit:
+    image: axllent/mailpit:v1.27
+    ports:
+      - '1025:1025'
+      - '8025:8025'
+
+  app:
+    build:
+      context: .
+      dockerfile: infra/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://silt:silt@postgres:5432/silt
+      APP_URL: http://localhost:4000
+      API_URL: http://localhost:4000
+      APP_SECRET: ${APP_SECRET:-local-docker-secret-change-me-please}
+      COOKIE_SECURE: 'false' # local HTTP only; always true behind HTTPS in real deployments
+      REDIS_URL: redis://redis:6379
+      MAIL_TRANSPORT: smtp
+      SMTP_HOST: mailpit
+      SMTP_PORT: 1025
+      # Photos are stored in the uploads volume. For S3 (Yandex Object Storage, AWS…) set STORAGE_DRIVER=s3 and S3_*.
+      STORAGE_DRIVER: ${STORAGE_DRIVER:-local}
+      S3_ENDPOINT: ${S3_ENDPOINT:-}
+      S3_BUCKET: ${S3_BUCKET:-}
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY:-}
+      S3_SECRET_KEY: ${S3_SECRET_KEY:-}
+      S3_PUBLIC_URL: ${S3_PUBLIC_URL:-}
+      # Real providers: set keys here. The mock provider is never available in production mode.
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-}
+      YOOKASSA_SHOP_ID: ${YOOKASSA_SHOP_ID:-}
+      YOOKASSA_SECRET_KEY: ${YOOKASSA_SECRET_KEY:-}
+    ports:
+      - '4000:4000'
+    volumes:
+      - uploads:/app/apps/api/uploads
+
+volumes:
+  pgdata:
+  uploads:
