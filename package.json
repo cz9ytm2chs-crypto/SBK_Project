@@ -16,7 +16,7 @@
     "dev:api": "npm run dev -w @silt/api",
     "dev:web": "npm run dev -w @silt/web",
     "build": "npm run build -w @silt/api && npm run build -w @silt/web",
-    "start": "npm run start -w @silt/api",
+    "start": "node infra/scripts/start.mjs",
     "db:start": "node infra/scripts/embedded-postgres.mjs",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
@@ -68,6 +68,8 @@
     "@embedded-postgres/windows-x64@17.9.0-beta.17": true,
     "@prisma/client@6.19.3": true,
     "@prisma/engines@6.19.3": true,
-    "@scarf/scarf": false
+    "@scarf/scarf": false,
+    "@embedded-postgres/linux-x64@17.9.0-beta.17": true,
+    "@embedded-postgres/darwin-arm64@17.9.0-beta.17": true
   }
 }
